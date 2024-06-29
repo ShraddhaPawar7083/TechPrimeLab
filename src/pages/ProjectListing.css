@@ -1,0 +1,159 @@
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background: url('../assets/Header-bg.png');
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 20vh;
+  border-radius: 0 0 0 50px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.background-logo{
+  margin-top: -3rem;
+  max-width: 4vw;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.form-control {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.table-text {
+  font-size: 12px; 
+}
+
+.search-sort{
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+}
+
+.rounded-button {
+  border-radius: 15px;
+  width: 5rem; 
+  font-size: 12px;
+}
+
+.rounded-button-primary {
+  background-color: #0556ac; 
+  /* border-color: #007bff;  */
+  border: none;
+  color: white; 
+}
+
+.rounded-button-secondary {
+  background-color: white; 
+  border-color: #066fde; 
+  color: #066fde; 
+}
+
+.rounded-button-danger {
+  background-color: white; 
+  border-color: #066fde; 
+  color: #066fde; 
+}
+
+.rounded-button-primary:hover {
+  background-color: #0056b3; 
+  border-color: #0056b3;
+}
+
+.rounded-button-secondary:hover {
+  background-color: #066fde; 
+  border-color: #066fde;
+}
+
+.rounded-button-danger:hover {
+  background-color: #066fde; 
+  border-color: #066fde;
+}
+
+.table thead th {
+  background-color: aliceblue;
+  color: #495057;
+  font-weight: bold;
+  text-align: center;
+  font-size: 12px;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table tbody tr td small {
+  display: block;
+  color: #6c757d;
+  font-size: 0.8em;
+}
+
+.btn {
+  margin-right: 5px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.pagination .page-link {
+  color: #007bff;
+}
+
+.pagination .page-link:hover {
+  color: #0056b3;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.pagination .page-link {
+  border: none;
+  padding: 0.5rem 0.75rem;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.d-flex span {
+  font-weight: bold;
+  color: #495057;
+}
+

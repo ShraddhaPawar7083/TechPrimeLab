@@ -1,0 +1,46 @@
+.create-project-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-top: 20px;
+}
+
+.header-row {
+  background: url('../assets/Header-bg.png');
+  background-size: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+.status-text {
+  display: flex;
+  align-items: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+button[type="submit"] {
+  background-color: #1a73e8;
+  border: none;
+}
+
+button[type="submit"]:hover {
+  background-color: #0c62d1;
+}
+
+.form-control {
+  border-radius: 4px;
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+.form-control:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+}

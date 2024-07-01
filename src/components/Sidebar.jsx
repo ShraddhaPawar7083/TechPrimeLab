@@ -10,16 +10,16 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <Nav className="flex-column">
-        <Nav.Link href="#dashboard" className="sidebar-link">
+        <Nav.Link href="dashboard" className="sidebar-link">
           <img src={dashboard} alt="Dashboard" className="sidebar-icon" />
         </Nav.Link>
-        <Nav.Link href="#projectlist" className="sidebar-link">
+        <Nav.Link href="projectlisting" className="sidebar-link">
           <img src={projectlist} alt="Projectlist" className="sidebar-icon" />
         </Nav.Link>
-        <Nav.Link href="#createproject" className="sidebar-link">
+        <Nav.Link href="createproject" className="sidebar-link">
           <img src={createproject} alt="Createproject" className="sidebar-icon" />
         </Nav.Link>
-        <Nav.Link href="#logout" className="sidebar-link">
+        <Nav.Link href="login" className="sidebar-link">
           <img src={logout} alt="Logout" className="sidebar-icon" />
         </Nav.Link>
       </Nav>

@@ -1,32 +1,62 @@
-import React from 'react';
-import { Table, Button, Pagination } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Pagination, Dropdown, DropdownButton } from 'react-bootstrap';
+import axios from 'axios';
 import './ProjectListing.css';
 import logo from '../assets/Logo.png';
 import Sidebar from '../components/Sidebar';
 
-const projects = [
-    { name: "Line Filter", reason: "Business", type: "Internal", division: "Compressor", category: "Quality A", priority: "High", dept: "Strategy", location: "Pune", status: "Running", startDate: "Jun-21, 2020", endDate: "Jan-01, 2021" },
-    { name: "Sticker Management", reason: "Dealership", type: "External", division: "Filters", category: "Quality B", priority: "Low", dept: "Finance", location: "Delhi", status: "Running", startDate: "Jan-01, 2021", endDate: "Jun-31, 2021" },
-    { name: "Pumps Connector", reason: "Transport", type: "Internal", division: "Compressor", category: "Quality C", priority: "Medium", dept: "Quality", location: "Mumbai", status: "Registered", startDate: "Feb-01, 2021", endDate: "July-31, 2021" },
-    { name: "Wall Reflector", reason: "Business", type: "Vendor", division: "Pumps", category: "Quality A", priority: "High", dept: "Maintenance", location: "Pune", status: "Cancelled", startDate: "Mar-05, 2021", endDate: "Dec-31, 2021" },
-    { name: "Tank Filter", reason: "Business", type: "External", division: "Glass", category: "Quality A", priority: "High", dept: "Stores", location: "Mumbai", status: "Registered", startDate: "Jan-01, 2021", endDate: "Nov-20, 2021" },
-    { name: "Water Heater", reason: "Dealership", type: "Vendor", division: "Compressor", category: "Quality D", priority: "Low", dept: "Finance", location: "Pune", status: "Cancelled", startDate: "July-01, 2021", endDate: "Nov-20, 2022" },
-    { name: "Large Mixer", reason: "Transport", type: "External", division: "Water Heater", category: "Quality A", priority: "Low", dept: "Stores", location: "Delhi", status: "Closed", startDate: "Feb-01, 2021", endDate: "Oct-20, 2021" }
-];
-
 const ProjectListing = () => {
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await axios.get('/api/Project');
+                setProjects(response.data);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+
+    const updateProjectStatus = async (projectId, newStatus) => {
+        try {
+            await axios.put(`/api/Project/${projectId}`, { status: newStatus });
+            setProjects(prevProjects =>
+                prevProjects.map(project =>
+                    project.projectId === projectId ? { ...project, status: newStatus } : project
+                )
+            );
+        } catch (error) {
+            console.error(`Error updating project status to ${newStatus}:`, error);
+        }
+    };
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error fetching projects: {error.message}</p>;
+
     return (
         <>
             <div className="header">
                 <h2>Project Listing</h2>
                 <img src={logo} alt="Logo" className="background-logo" />
             </div>
-            <Sidebar/>
+            <Sidebar />
             <div className="container mt-4">
-              <div className='search-sort'>
-                <input type="text" placeholder="Search" className="form-control mb-3" />
-                <span>Sort By: Priority</span>
-              </div>
+                <div className='search-sort'>
+                    <input type="text" placeholder="Search" className="form-control mb-3" />
+                    <DropdownButton id="dropdown-basic-button" title="Sort by">
+                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                    </DropdownButton>
+                </div>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -45,21 +75,36 @@ const ProjectListing = () => {
                     <tbody>
                         {projects.map((project, index) => (
                             <tr key={index}>
-                              <td className="table-text">
-                                {project.name}<br /><small>{project.startDate} to {project.endDate}</small>
-                              </td>
+                                <td className="table-text">
+                                    {project.name}<br /><small>{project.startDate} to {project.endDate}</small>
+                                </td>
                                 <td className="table-text">{project.reason}</td>
                                 <td className="table-text">{project.type}</td>
                                 <td className="table-text">{project.division}</td>
                                 <td className="table-text">{project.category}</td>
                                 <td className="table-text">{project.priority}</td>
-                                <td className="table-text">{project.dept}</td>
+                                <td className="table-text">{project.department}</td>
                                 <td className="table-text">{project.location}</td>
                                 <td className="table-text">{project.status}</td>
                                 <td>
-                                  <Button className="mr-1 rounded-button rounded-button-primary">Start</Button>
-                                  <Button className="mr-1 rounded-button rounded-button-secondary">Close</Button>
-                                  <Button className="rounded-button rounded-button-danger">Cancel</Button>
+                                    <Button
+                                        className="mr-1 rounded-button rounded-button-primary"
+                                        onClick={() => updateProjectStatus(project.projectId, 'Running')}
+                                    >
+                                        Start
+                                    </Button>
+                                    <Button
+                                        className="mr-1 rounded-button rounded-button-secondary"
+                                        onClick={() => updateProjectStatus(project.projectId, 'Closed')}
+                                    >
+                                        Close
+                                    </Button>
+                                    <Button
+                                        className="rounded-button rounded-button-danger"
+                                        onClick={() => updateProjectStatus(project.projectId, 'Cancelled')}
+                                    >
+                                        Cancel
+                                    </Button>
                                 </td>
                             </tr>
                         ))}

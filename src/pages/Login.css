@@ -1,59 +1,3 @@
-/* .login-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background-color: #f0f2f5; 
-  }
-  
-  .background-section {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 70%; 
-    background-image: url('../assets/login-bg.png'); 
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0px 0px 0px 50px;
-  }
-  
-  .background-logo {
-    width: 100px; 
-    margin-top: -150px;
-  }
-  
-  .background-title {
-    color: white;
-    margin-top: 10px;
-  }
-  
-  .login-card {
-    max-width: 400px;
-    width: 100%;
-    background-color: white;
-    border-radius: 8px;
-    z-index: 1; 
-    position: relative; 
-    margin-top: 45vh; 
-  }
-  label{
-      text-align: start;
-  }
-  
-  @media (max-width: 576px) {
-    .login-card {
-      padding: 2rem;
-      margin-top: 15vh; 
-    }
-  }
-   */
-
-
-
-
-
    .login-main {
     background-color: #f0f2f5;
     width: 100vw;
@@ -63,7 +7,7 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    margin-top: -1rem;
+    margin-top: 0rem;
   }
   
   .upper {
@@ -98,7 +42,7 @@
     width: 90%;
     /* height: 100%; */
     max-width: 400px;
-    margin-top: -10rem;
+    margin-top: -15rem;
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: 2px 2px rgb(202, 237, 249);
@@ -116,6 +60,12 @@
     padding: 0.5rem;
     margin-top: 0.5rem;
   }
+
+  .submit-button{
+    width: 15vw;
+    border-radius: 5rem;
+  }
+  
   
   @media (max-width: 768px) {
     .upper {
@@ -137,6 +87,8 @@
       font-size: 0.875rem;
     }
   }
+
+  
   
   @media (max-width: 480px) {
     .upper {
@@ -145,13 +97,13 @@
     }
   
     .upper-in {
-      margin-top: 0; /* Remove negative margin for mobile */
+      margin-top: 0; 
     }
   
     .bottom {
       width: 100%;
-      max-width: 100%; /* Ensure full width on smaller screens */
-      margin-top: -1rem; /* Push the login card down for mobile */
+      max-width: 100%; 
+      margin-top: -1rem; 
       border-radius: 0;
       height: auto;
       border: none !important;

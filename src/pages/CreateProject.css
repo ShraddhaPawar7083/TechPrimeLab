@@ -23,15 +23,17 @@
 
 .text-right {
   text-align: right;
+  margin-top: -4rem;
 }
 
 button[type="submit"] {
-  background-color: #1a73e8;
+  background-color: #063e89;
   border: none;
+  border-radius: 7rem;
 }
 
 button[type="submit"]:hover {
-  background-color: #0c62d1;
+  background-color: #063e89;
 }
 
 .form-control {
@@ -43,4 +45,48 @@ button[type="submit"]:hover {
 .form-control:focus {
   border-color: #1a73e8;
   box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+}
+
+.custom-dropdown-toggle {
+  width: 100%;
+  text-align: left;
+  background-color: white;
+  border-color: #ced4da;
+}
+
+.custom-dropdown-menu {
+  width: 100%;
+}
+
+.custom-dropdown .dropdown-menu {
+  width: 100%;
+}
+
+.create-project-container .form-group {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .create-project-container {
+    padding: 1rem;
+  }
+  
+  .header-row {
+    background-size: auto; 
+  }
+  
+  .text-right {
+    text-align: center; 
+    margin-top: -2rem;
+  }
+  
+  button[type="submit"] {
+    margin-top: 1rem; 
+  }
+}
+
+@media (min-width: 768px) {
+  .create-project-container {
+    flex-direction: row; 
+  }
 }

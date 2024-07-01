@@ -2,6 +2,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: left;
   margin-top: -2rem;
+  height: 6rem;
 }
 
 .custom-card-title {
@@ -18,5 +19,5 @@
 
 .card-title {
   text-align: left;
-  padding: 0 0 1rem 0;
+  /* padding: 0 0 1rem 0; */
 }

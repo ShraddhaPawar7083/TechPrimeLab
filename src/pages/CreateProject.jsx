@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Dropdown } from 'react-bootstrap';
+import axios from 'axios';
 import './CreateProject.css'; 
 import logo from '../assets/Logo.png'; 
+import Sidebar from '../components/Sidebar';
 
 const CreateProject = () => {
-  const [project, setProject] = useState({
+  const initialProjectState = {
     theme: '',
     reason: '',
     type: '',
@@ -17,29 +19,78 @@ const CreateProject = () => {
     startDate: '',
     endDate: '',
     status: 'Registered'
-  });
+  };
+
+  const [project, setProject] = useState(initialProjectState);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProject({ ...project, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleDropdownChange = (field, value) => {
+    setProject(prevState => ({
+      ...prevState,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Make API call to save project details
-    console.log(project);
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      await axios.post('/api/project', project); 
+      setSuccess(true);
+      setProject(initialProjectState);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusChange = async (newStatus) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      setProject({ ...project, status: newStatus });
+      await axios.put('/api/project/status', { projectId: project.projectId, status: newStatus });
+      setSuccess(true);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const dropdownOptions = {
+    reason: ['Business', 'Dealership', 'Transport'],
+    type: ['Internal', 'External'],
+    division: ['Filters', 'Compressor', 'Pumps', 'Glass', 'Water Heater'],
+    category: ['Quality A', 'Quality B', 'Quality C', 'Quality D'],
+    priority: ['High', 'Medium', 'Low'],
+    department: ['Strategy', 'Finance', 'Quality', 'Maintenance', 'Stores'],
+    location: ['Pune', 'Mumbai', 'Delhi'],
   };
 
   return (
     <Container className="create-project-container">
+      <Sidebar />
       <Row className="header-row text-white align-items-center p-3">
-          <Col md={8}>
-            <h1>Create Project</h1>
-          </Col>
-          <Col md={4} className="text-center">
-            <img src={logo} alt="Logo" className="dashboard-logo" />
-          </Col>
-        </Row>
+        <Col md={8}>
+          <h1>Create Project</h1>
+        </Col>
+        <Col md={4} className="text-center">
+          <img src={logo} alt="Logo" className="dashboard-logo" />
+        </Col>
+      </Row>
       <Form onSubmit={handleSubmit}>
         <Row className="mt-3">
           <Col md={12}>
@@ -53,48 +104,71 @@ const CreateProject = () => {
               />
             </Form.Group>
           </Col>
+          <Col md={12} className="text-right">
+            <Button type="submit" variant="primary" disabled={loading}>
+              {loading ? 'Saving...' : 'Save Project'}
+            </Button>
+          </Col>
         </Row>
         <Row className="mt-3">
           <Col md={4}>
             <Form.Group controlId="reason">
               <Form.Label>Reason</Form.Label>
-              <Form.Control 
-                as="select" 
-                name="reason" 
-                value={project.reason} 
-                onChange={handleChange}
-              >
-                <option>For Business</option>
-                <option>For Research</option>
-              </Form.Control>
+              <Dropdown className="custom-dropdown">
+                <Dropdown.Toggle variant="light" id="dropdown-reason" className="custom-dropdown-toggle">
+                  {project.reason || 'Select Reason'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="custom-dropdown-menu">
+                  {dropdownOptions.reason.map(option => (
+                    <Dropdown.Item 
+                      key={option} 
+                      onClick={() => handleDropdownChange('reason', option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Form.Group>
           </Col>
           <Col md={4}>
             <Form.Group controlId="type">
               <Form.Label>Type</Form.Label>
-              <Form.Control 
-                as="select" 
-                name="type" 
-                value={project.type} 
-                onChange={handleChange}
-              >
-                <option>Internal</option>
-                <option>External</option>
-              </Form.Control>
+              <Dropdown className="custom-dropdown">
+                <Dropdown.Toggle variant="light" id="dropdown-type" className="custom-dropdown-toggle">
+                  {project.type || 'Select Type'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="custom-dropdown-menu">
+                  {dropdownOptions.type.map(option => (
+                    <Dropdown.Item 
+                      key={option} 
+                      onClick={() => handleDropdownChange('type', option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Form.Group>
           </Col>
           <Col md={4}>
             <Form.Group controlId="division">
               <Form.Label>Division</Form.Label>
-              <Form.Control 
-                as="select" 
-                name="division" 
-                value={project.division} 
-                onChange={handleChange}
-              >
-                <option>Filters</option>
-                <option>Hardware</option>
-              </Form.Control>
+              <Dropdown className="custom-dropdown">
+                <Dropdown.Toggle variant="light" id="dropdown-division" className="custom-dropdown-toggle">
+                  {project.division || 'Select Division'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="custom-dropdown-menu">
+                  {dropdownOptions.division.map(option => (
+                    <Dropdown.Item 
+                      key={option} 
+                      onClick={() => handleDropdownChange('division', option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Form.Group>
           </Col>
         </Row>
@@ -102,62 +176,65 @@ const CreateProject = () => {
           <Col md={4}>
             <Form.Group controlId="category">
               <Form.Label>Category</Form.Label>
-              <Form.Control 
-                as="select" 
-                name="category" 
-                value={project.category} 
-                onChange={handleChange}
-              >
-                <option>Quality A</option>
-                <option>Quality B</option>
-              </Form.Control>
+              <Dropdown className="custom-dropdown">
+                <Dropdown.Toggle variant="light" id="dropdown-category" className="custom-dropdown-toggle">
+                  {project.category || 'Select Category'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="custom-dropdown-menu">
+                  {dropdownOptions.category.map(option => (
+                    <Dropdown.Item 
+                      key={option} 
+                      onClick={() => handleDropdownChange('category', option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Form.Group>
           </Col>
           <Col md={4}>
             <Form.Group controlId="priority">
               <Form.Label>Priority</Form.Label>
-              <Form.Control 
-                as="select" 
-                name="priority" 
-                value={project.priority} 
-                onChange={handleChange}
-              >
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-              </Form.Control>
+              <Dropdown className="custom-dropdown">
+                <Dropdown.Toggle variant="light" id="dropdown-priority" className="custom-dropdown-toggle">
+                  {project.priority || 'Select Priority'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="custom-dropdown-menu">
+                  {dropdownOptions.priority.map(option => (
+                    <Dropdown.Item 
+                      key={option} 
+                      onClick={() => handleDropdownChange('priority', option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Form.Group>
           </Col>
           <Col md={4}>
             <Form.Group controlId="department">
               <Form.Label>Department</Form.Label>
-              <Form.Control 
-                as="select" 
-                name="department" 
-                value={project.department} 
-                onChange={handleChange}
-              >
-                <option>Strategy</option>
-                <option>Development</option>
-              </Form.Control>
+              <Dropdown className="custom-dropdown">
+                <Dropdown.Toggle variant="light" id="dropdown-department" className="custom-dropdown-toggle">
+                  {project.department || 'Select Department'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="custom-dropdown-menu">
+                  {dropdownOptions.department.map(option => (
+                    <Dropdown.Item 
+                      key={option} 
+                      onClick={() => handleDropdownChange('department', option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Form.Group>
           </Col>
         </Row>
         <Row className="mt-3">
-          <Col md={4}>
-            <Form.Group controlId="location">
-              <Form.Label>Location</Form.Label>
-              <Form.Control 
-                as="select" 
-                name="location" 
-                value={project.location} 
-                onChange={handleChange}
-              >
-                <option>Pune</option>
-                <option>Mumbai</option>
-              </Form.Control>
-            </Form.Group>
-          </Col>
           <Col md={4}>
             <Form.Group controlId="startDate">
               <Form.Label>Start Date as per Project Plan</Form.Label>
@@ -180,15 +257,59 @@ const CreateProject = () => {
               />
             </Form.Group>
           </Col>
+          <Col md={4}>
+            <Form.Group controlId="location">
+              <Form.Label>Location</Form.Label>
+              <Dropdown className="custom-dropdown">
+                <Dropdown.Toggle variant="light" id="dropdown-location" className="custom-dropdown-toggle">
+                  {project.location || 'Select Location'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="custom-dropdown-menu">
+                  {dropdownOptions.location.map(option => (
+                    <Dropdown.Item 
+                      key={option} 
+                      onClick={() => handleDropdownChange('location', option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Form.Group>
+          </Col>
         </Row>
         <Row className="mt-3">
           <Col md={4} className="status-text">
             Status: {project.status}
           </Col>
-          <Col md={8} className="text-right">
-            <Button type="submit" variant="primary">Save Project</Button>
-          </Col>
         </Row>
+        {/* <Row className="mt-3">
+          <Col md={12}>
+            <Button
+              className="mr-1 rounded-button rounded-button-primary"
+              onClick={() => handleStatusChange('Running')}
+              disabled={loading}
+            >
+              Start
+            </Button>
+            <Button
+              className="mr-1 rounded-button rounded-button-secondary"
+              onClick={() => handleStatusChange('Closed')}
+              disabled={loading}
+            >
+              Close
+            </Button>
+            <Button
+              className="rounded-button rounded-button-danger"
+              onClick={() => handleStatusChange('Cancelled')}
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+          </Col>
+        </Row> */}
+        {error && <Row className="mt-3"><Col md={12} className="text-danger">{error.message}</Col></Row>}
+        {success && <Row className="mt-3"><Col md={12} className="text-success">Project saved successfully!</Col></Row>}
       </Form>
     </Container>
   );
